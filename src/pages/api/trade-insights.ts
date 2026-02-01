@@ -115,8 +115,20 @@ export const POST: APIRoute = async ({ request }) => {
     }
 };
 
-export const GET: APIRoute = async ({ url }) => {
+export const GET: APIRoute = async ({ url, request }) => {
     try {
+        const authHeader = request.headers.get('Authorization');
+
+        if (!authHeader || !authHeader.startsWith('Bearer ')) {
+            return new Response(
+                JSON.stringify({
+                    error: 'Authentication required'
+                }),
+                { status: 401, headers: { 'Content-Type': 'application/json' } }
+            );
+        }
+
+        const token = authHeader.replace('Bearer ', '');
         const limit = url.searchParams.get('limit') || '10';
 
         const response = await fetch(
@@ -124,7 +136,7 @@ export const GET: APIRoute = async ({ url }) => {
             {
                 headers: {
                     apikey: SUPABASE_ANON_KEY,
-                    Authorization: `Bearer ${SUPABASE_ANON_KEY}`
+                    Authorization: `Bearer ${token}`
                 }
             }
         );

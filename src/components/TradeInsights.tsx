@@ -1,4 +1,7 @@
 import { useState, useEffect } from 'react';
+import { AuthProvider, useAuth } from '../context/AuthContext';
+import { supabase } from '../lib/supabase';
+import AuthModal from './AuthModal';
 
 interface TradeInsight {
     id: string;
@@ -11,25 +14,43 @@ interface TradeInsight {
     created_at: string;
 }
 
-export default function TradeInsights() {
+function TradeInsightsContent() {
+    const { user, session, loading: authLoading } = useAuth();
     const [insights, setInsights] = useState<TradeInsight[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+    const [showAuthModal, setShowAuthModal] = useState(false);
 
     useEffect(() => {
-        fetchInsights();
-        const interval = setInterval(fetchInsights, 60000);
-        return () => clearInterval(interval);
-    }, []);
+        if (user && session) {
+            fetchInsights();
+            const interval = setInterval(fetchInsights, 60000);
+            return () => clearInterval(interval);
+        } else {
+            setLoading(false);
+        }
+    }, [user, session]);
 
     const fetchInsights = async () => {
         try {
-            const response = await fetch('/api/trade-insights?limit=10');
+            const token = session?.access_token;
+            if (!token) {
+                setError('Not authenticated');
+                return;
+            }
+
+            const response = await fetch('/api/trade-insights?limit=10', {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
             const data = await response.json();
 
             if (data.insights) {
                 setInsights(data.insights);
                 setError(null);
+            } else if (data.error) {
+                setError(data.error);
             }
         } catch (err) {
             setError('Failed to load trade insights');
@@ -81,11 +102,36 @@ export default function TradeInsights() {
         });
     };
 
-    if (loading) {
+    if (authLoading || loading) {
         return (
             <div className="flex items-center justify-center py-12">
                 <div className="text-lg opacity-70">Loading trade insights...</div>
             </div>
+        );
+    }
+
+    if (!user) {
+        return (
+            <>
+                <div className="p-8 text-center rounded-lg bg-gradient-to-br from-blue-500/10 to-cyan-500/10 border border-blue-500/30">
+                    <div className="max-w-md mx-auto">
+                        <h3 className="text-2xl font-bold mb-3">Premium Content</h3>
+                        <p className="text-lg opacity-90 mb-6">
+                            Live trade insights are available exclusively to registered members.
+                        </p>
+                        <p className="text-sm opacity-70 mb-6">
+                            Sign in or create a free account to access real-time trade signals, technical analysis, and market intelligence.
+                        </p>
+                        <button
+                            onClick={() => setShowAuthModal(true)}
+                            className="px-6 py-3 bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 rounded font-medium"
+                        >
+                            Sign In to View Insights
+                        </button>
+                    </div>
+                </div>
+                <AuthModal isOpen={showAuthModal} onClose={() => setShowAuthModal(false)} />
+            </>
         );
     }
 
@@ -101,7 +147,7 @@ export default function TradeInsights() {
         return (
             <div className="p-8 text-center rounded-lg bg-gray-800/30 border border-gray-700">
                 <p className="text-lg opacity-70">No trade insights available yet.</p>
-                <p className="mt-2 text-sm opacity-50">Connect your Make.com workflow to start receiving insights.</p>
+                <p className="mt-2 text-sm opacity-50">New insights will appear here as they are published.</p>
             </div>
         );
     }
@@ -152,5 +198,13 @@ export default function TradeInsights() {
                 </div>
             ))}
         </div>
+    );
+}
+
+export default function TradeInsights() {
+    return (
+        <AuthProvider>
+            <TradeInsightsContent />
+        </AuthProvider>
     );
 }
