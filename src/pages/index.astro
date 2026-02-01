@@ -4,80 +4,47 @@ import Markdown from '../components/Markdown.astro';
 import TradeInsights from '../components/TradeInsights.tsx';
 
 const intro = `
-Hi, I'm **JPVED**.
+Hi, I'm **JP**.
 
-I help teams turn complex work into clear, executable outcomes — combining **business analysis, documentation, and automation** to improve how systems and operations run.
+I specialize in **data-driven insights, automation, and analytics** to help professionals make better investment decisions.
 
-**What you'll get working with me**
-- Clear requirements + process maps
-- Strong documentation that stakeholders actually use
-- Practical automation and reporting improvements
-- A calm, structured approach to delivery
-`;
-
-const services = `
-### IT Services
-- **Business & Systems Analysis** (requirements, user stories, process design)
-- **Billing / Data / Integrations** (workflows, reporting, operational improvements)
-- **Automation + AI enablement** (streamlined ops, smarter workflows)
-- **Delivery support** (backlog grooming, stakeholder alignment, testing support)
-`;
-
-const contact = `
-### Contact
-Email: **you@jpved.com**
-LinkedIn: **https://www.linkedin.com/in/YOUR-LINK/**
-
-If you send a message, include:
-- what you're building
-- where you're stuck
-- your target timeline
+**What I offer**
+- Real-time stock trade analysis and insights
+- Automated workflow integration from Make.com
+- Technical analysis and market intelligence
+- Clean, actionable data visualization
 `;
 ---
 
-<Layout title="JPVED | Jalpesh Patel">
-  <section class="mb-12">
-    <h1 class="mb-3">JPVED</h1>
-    <p class="text-lg opacity-90">
-      Practical systems, documentation, and automation that help teams deliver.
+<Layout title="JP | Trading Analytics & Insights">
+  <section class="mb-16">
+    <h1 class="mb-4 text-5xl font-bold bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">JP</h1>
+    <p class="text-2xl font-light opacity-90 mb-3">
+      Trading Analytics & Market Insights
+    </p>
+    <p class="text-lg opacity-70">
+      Powered by automated workflows and real-time data analysis
     </p>
 
-    <div class="mt-6 flex gap-3 flex-wrap">
-      <a href="#services" class="btn btn-lg sm:min-w-64">IT Services</a>
-      <a href="#trade-insights" class="btn btn-lg sm:min-w-64">Trade Insights</a>
-      <a href="#contact" class="btn btn-lg sm:min-w-64">Contact</a>
+    <div class="mt-8 flex gap-3 flex-wrap">
+      <a href="#trade-insights" class="btn btn-lg sm:min-w-64 bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 border-0">View Live Insights</a>
+      <a href="/charts" class="btn btn-lg sm:min-w-64">Browse Charts</a>
     </div>
   </section>
 
-  <section class="mb-12">
+  <section class="mb-16">
     <Markdown content={intro} class="text-lg" />
   </section>
 
-  <section id="services" class="mb-12">
-    <Markdown content={services} class="text-lg" />
-    <div class="mt-6">
-      <h3 class="mb-3 text-xl font-semibold">Recent focus</h3>
-      <ul class="space-y-2">
-        <li>Modernizing legacy-to-new billing and statement workflows</li>
-        <li>Clarifying requirements across business + engineering stakeholders</li>
-        <li>Reducing manual work through automation and cleaner reporting</li>
-      </ul>
-    </div>
-  </section>
-
-  <section id="trade-insights" class="mb-12">
-    <h2 class="mb-6">Stock Trade Analysis Feed</h2>
-    <p class="mb-6 text-lg opacity-90">
-      Real-time trade insights powered by automated analysis workflow from Make.com.
+  <section id="trade-insights" class="mb-16">
+    <h2 class="mb-6 text-3xl font-bold">Live Trade Insights</h2>
+    <p class="mb-8 text-lg opacity-90">
+      Real-time trade signals powered by automated analysis workflow. Get actionable insights on market movements and trading opportunities.
     </p>
     <TradeInsights client:load />
   </section>
 
-  <section id="contact" class="mb-12">
-    <Markdown content={contact} class="text-lg" />
-  </section>
-
-  <footer class="opacity-70">
-    <small>© {new Date().getFullYear()} JPVED. All rights reserved.</small>
+  <footer class="opacity-70 py-6 border-t border-gray-800">
+    <small>© {new Date().getFullYear()} JP Analytics. All rights reserved.</small>
   </footer>
 </Layout>

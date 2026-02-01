@@ -1,0 +1,45 @@
+---
+import Layout from '../layouts/Layout.astro';
+import TradeInsights from '../components/TradeInsights.tsx';
+---
+
+<Layout title="Trade Insights | JP Analytics">
+  <section class="mb-12">
+    <h1 class="mb-4 text-4xl font-bold">Live Trade Insights</h1>
+    <p class="text-xl opacity-90 mb-8">
+      Real-time trade signals and market analysis powered by automated workflows.
+      Get actionable insights on market movements and trading opportunities as they happen.
+    </p>
+
+    <div class="p-6 mb-8 rounded-lg bg-gradient-to-r from-blue-500/10 to-cyan-500/10 border border-blue-500/20">
+      <h3 class="text-lg font-semibold mb-2">How It Works</h3>
+      <p class="opacity-80">
+        Our automated analysis workflow processes market data in real-time through Make.com,
+        evaluating technical indicators, market sentiment, and price action to generate
+        timely buy, sell, and hold recommendations.
+      </p>
+    </div>
+  </section>
+
+  <section class="mb-12">
+    <TradeInsights client:load />
+  </section>
+
+  <section class="mb-12 p-6 rounded-lg bg-gray-800/30 border border-gray-700">
+    <h3 class="text-xl font-semibold mb-4">Understanding Trade Signals</h3>
+    <div class="grid gap-4 md:grid-cols-3">
+      <div class="p-4 rounded bg-green-500/10 border border-green-500/30">
+        <div class="text-green-400 font-bold mb-2">BUY</div>
+        <p class="text-sm opacity-80">Strong upward momentum detected. Favorable entry point identified based on technical analysis.</p>
+      </div>
+      <div class="p-4 rounded bg-red-500/10 border border-red-500/30">
+        <div class="text-red-400 font-bold mb-2">SELL</div>
+        <p class="text-sm opacity-80">Potential reversal or weakness detected. Consider taking profits or reducing exposure.</p>
+      </div>
+      <div class="p-4 rounded bg-yellow-500/10 border border-yellow-500/30">
+        <div class="text-yellow-400 font-bold mb-2">HOLD</div>
+        <p class="text-sm opacity-80">Maintain current position. Market conditions suggest waiting for clearer signals.</p>
+      </div>
+    </div>
+  </section>
+</Layout>

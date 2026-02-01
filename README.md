@@ -1,8 +1,8 @@
-# Astro on Netlify Platform Starter
+# JP Analytics
 
-[Live Demo](https://astro-platform-starter.netlify.app/)
+A modern trading analytics platform built with Astro.js, React, and Tailwind CSS.
 
-A modern starter based on Astro.js, Tailwind, and [Netlify Core Primitives](https://docs.netlify.com/core/overview/#develop) (Edge Functions, Image CDN, Blobs).
+Features real-time trade insights, market analytics, and automated workflow integration.
 
 ## Astro Commands
 
@@ -17,10 +17,6 @@ All commands are run from the root of the project, from a terminal:
 | `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
 | `npm run astro -- --help` | Get help using the Astro CLI                     |
 
-## Deploying to Netlify
-
-[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/netlify-templates/astro-platform-starter)
-
 ## Developing Locally
 
 | Prerequisites                                                                |
@@ -30,13 +26,7 @@ All commands are run from the root of the project, from a terminal:
 
 1. Clone this repository, then run `npm install` in its root directory.
 
-2. Recommended: link your local repository to a Netlify project. This will ensure you're using the same runtime version for both local development and your deployed project.
-
-```
-netlify link
-```
-
-3. Run the Astro.js development server:
+2. Run the Astro.js development server:
 
 ```
 npm run dev
