@@ -9,12 +9,49 @@ export const POST: APIRoute = async ({ request }) => {
     try {
         const data = await request.json();
 
-        const { symbol, action, price, reasoning, confidence, metadata } = data;
+        const { symbol, action, price, reasoning, confidence, metadata, html_content } = data;
+
+        if (html_content) {
+            const response = await fetch(`${SUPABASE_URL}/rest/v1/trade_insights`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    apikey: SUPABASE_ANON_KEY,
+                    Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
+                    Prefer: 'return=representation'
+                },
+                body: JSON.stringify({
+                    html_content,
+                    metadata: metadata || {}
+                })
+            });
+
+            if (!response.ok) {
+                const error = await response.text();
+                return new Response(
+                    JSON.stringify({
+                        error: 'Failed to store trade insight',
+                        details: error
+                    }),
+                    { status: 500, headers: { 'Content-Type': 'application/json' } }
+                );
+            }
+
+            const result = await response.json();
+
+            return new Response(
+                JSON.stringify({
+                    success: true,
+                    data: result[0]
+                }),
+                { status: 201, headers: { 'Content-Type': 'application/json' } }
+            );
+        }
 
         if (!symbol || !action || !price || !reasoning) {
             return new Response(
                 JSON.stringify({
-                    error: 'Missing required fields: symbol, action, price, reasoning'
+                    error: 'Missing required fields: either html_content OR (symbol, action, price, reasoning)'
                 }),
                 { status: 400, headers: { 'Content-Type': 'application/json' } }
             );

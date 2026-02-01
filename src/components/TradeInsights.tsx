@@ -2,11 +2,12 @@ import { useState, useEffect } from 'react';
 
 interface TradeInsight {
     id: string;
-    symbol: string;
-    action: 'buy' | 'sell' | 'hold';
-    price: number;
-    reasoning: string;
-    confidence: 'high' | 'medium' | 'low';
+    symbol?: string;
+    action?: 'buy' | 'sell' | 'hold';
+    price?: number;
+    reasoning?: string;
+    confidence?: 'high' | 'medium' | 'low';
+    html_content?: string;
     created_at: string;
 }
 
@@ -112,28 +113,42 @@ export default function TradeInsights() {
                     key={insight.id}
                     className="p-6 transition-all duration-200 border rounded-lg bg-gray-800/40 border-gray-700 hover:border-primary/50 hover:bg-gray-800/60"
                 >
-                    <div className="flex flex-wrap items-start justify-between gap-3 mb-3">
-                        <div className="flex items-center gap-3">
-                            <span className="text-2xl font-bold text-white">{insight.symbol}</span>
-                            <span
-                                className={`px-3 py-1 text-sm font-semibold uppercase rounded border ${getActionColor(insight.action)}`}
-                            >
-                                {insight.action}
-                            </span>
+                    {insight.html_content ? (
+                        <div>
+                            <div className="flex justify-end mb-3">
+                                <span className="text-sm opacity-60">{formatDate(insight.created_at)}</span>
+                            </div>
+                            <div
+                                className="trade-insight-html"
+                                dangerouslySetInnerHTML={{ __html: insight.html_content }}
+                            />
                         </div>
-                        <div className="flex items-center gap-3">
-                            <span className={`px-2 py-1 text-xs font-medium uppercase rounded ${getConfidenceBadge(insight.confidence)}`}>
-                                {insight.confidence}
-                            </span>
-                            <span className="text-sm opacity-60">{formatDate(insight.created_at)}</span>
-                        </div>
-                    </div>
+                    ) : (
+                        <>
+                            <div className="flex flex-wrap items-start justify-between gap-3 mb-3">
+                                <div className="flex items-center gap-3">
+                                    <span className="text-2xl font-bold text-white">{insight.symbol}</span>
+                                    <span
+                                        className={`px-3 py-1 text-sm font-semibold uppercase rounded border ${getActionColor(insight.action!)}`}
+                                    >
+                                        {insight.action}
+                                    </span>
+                                </div>
+                                <div className="flex items-center gap-3">
+                                    <span className={`px-2 py-1 text-xs font-medium uppercase rounded ${getConfidenceBadge(insight.confidence!)}`}>
+                                        {insight.confidence}
+                                    </span>
+                                    <span className="text-sm opacity-60">{formatDate(insight.created_at)}</span>
+                                </div>
+                            </div>
 
-                    <div className="mb-3">
-                        <span className="text-xl font-semibold text-primary">${insight.price.toFixed(2)}</span>
-                    </div>
+                            <div className="mb-3">
+                                <span className="text-xl font-semibold text-primary">${insight.price!.toFixed(2)}</span>
+                            </div>
 
-                    <p className="leading-relaxed opacity-90">{insight.reasoning}</p>
+                            <p className="leading-relaxed opacity-90">{insight.reasoning}</p>
+                        </>
+                    )}
                 </div>
             ))}
         </div>
